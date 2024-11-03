@@ -16,7 +16,11 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(blank=True, null=True)
     profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
-    # Add other fields as necessary
+    contact_number = models.CharField(max_length=15, blank=True, null=True)
+    place = models.CharField(max_length=255, blank=True, null=True)
+    company = models.CharField(max_length=255, blank=True, null=True)
+    salary = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    job_title = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
         return self.user.username

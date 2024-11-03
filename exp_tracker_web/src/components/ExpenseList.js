@@ -60,35 +60,43 @@ const ExpenseList = ({ expenses }) => {
   );
 
   return (
-    <div>
-      <h2>Expenses</h2>
-      
-      {/* Filter Input */}
-      <input
-        type="text"
-        placeholder="Filter by title or category"
-        value={filterText}
-        onChange={handleFilterChange}
-        style={{ marginBottom: '10px', padding: '5px', width: '20%' }}
-      />
-
-      {/* Sorting Options */}
-      <div style={{ marginBottom: '10px' }}>
-        <label>Sort By: </label>
-        <select className="form-select"
-          onChange={(e) => {
-            const [key, direction] = e.target.value.split('-');
-            handleSort(key, direction);
-          }}
+    <div className='container'>
+      <div className='row'>
+        <div 
+        className='col-9'
         >
-          <option selected value="">Select...</option>
-          <option value="title-ascending">A-Z</option>
-          <option value="title-descending">Z-A</option>
-          <option value="amount-ascending">Low to High</option>
-          <option value="amount-descending">High to Low</option>
-          <option value="date-ascending">Earliest</option>
-          <option value="date-descending">Latest</option>
-        </select>
+          <h2>Expenses</h2>
+        </div>
+        <div className='col-3'>
+          {/* Filter Input */}
+          <input
+            className="form-control"
+            type="text"
+            placeholder="Filter by title or category"
+            value={filterText}
+            onChange={handleFilterChange}
+            style={{ marginBottom: '10px', padding: '5px' }}
+          />
+
+          {/* Sorting Options */}
+          <div style={{ marginBottom: '10px' }}>
+            <label>Sort By: </label>
+            <select className="form-select"
+              onChange={(e) => {
+                const [key, direction] = e.target.value.split('-');
+                handleSort(key, direction);
+              }}
+            >
+              <option selected value="">Select...</option>
+              <option value="title-ascending">A-Z</option>
+              <option value="title-descending">Z-A</option>
+              <option value="amount-ascending">Low to High</option>
+              <option value="amount-descending">High to Low</option>
+              <option value="date-ascending">Earliest</option>
+              <option value="date-descending">Latest</option>
+            </select>
+          </div>
+        </div>
       </div>
 
       {/* Expenses Table */}
@@ -117,14 +125,16 @@ const ExpenseList = ({ expenses }) => {
 
       {/* Pagination Controls */}
       <div>
-        <button 
+        <button
+          className='btn btn-primary'
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
           disabled={currentPage === 1}
         >
           Previous
         </button>
         <span> Page {currentPage} of {totalPages} </span>
-        <button 
+        <button
+          className='btn btn-primary'
           onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
           disabled={currentPage === totalPages}
         >

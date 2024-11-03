@@ -4,8 +4,11 @@ from .serializers import ExpenseSerializer, UserSerializer, ProfileSerializer
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
+from django.http import Http404
 
 class ExpenseViewSet(viewsets.ModelViewSet):
     queryset = Expense.objects.all()
@@ -29,6 +32,11 @@ class LoginView(APIView):
 class ProfileView(generics.RetrieveUpdateAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get_object(self):
-        return self.get_queryset().get(user=self.request.user)
+        try:
+            return self.get_queryset().get(user=self.request.user)
+        except Profile.DoesNotExist:
+            raise Http404("Profile not found")
