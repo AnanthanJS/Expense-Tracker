@@ -18,10 +18,11 @@ class UserSerializer(serializers.ModelSerializer):
         user = User(**validated_data)
         user.set_password(validated_data['password'])
         user.save()
+        Profile.objects.create(user=user)
         return user
     
 
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ['bio', 'profile_picture']  # Add other fields as necessary
+        fields = ['bio', 'profile_picture', 'contact_number', 'place', 'company', 'salary', 'job_title']
