@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import Pagination from './Pagination/Pagination';
 
 const ExpenseList = ({ expenses }) => {
   const [filteredExpenses, setFilteredExpenses] = useState(expenses);
   const [filterText, setFilterText] = useState('');
   const [sortConfig, setSortConfig] = useState({ key: '', direction: '' });
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10; // Change this number to show more or fewer items per page
+  const itemsPerPage = 5; // Change this number to show more or fewer items per page
 
   // Filter expenses by title or category based on filter text
   const handleFilterChange = (event) => {
@@ -123,24 +124,12 @@ const ExpenseList = ({ expenses }) => {
         </tbody>
       </table>
 
-      {/* Pagination Controls */}
-      <div>
-        <button
-          className='btn btn-primary'
-          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-          disabled={currentPage === 1}
-        >
-          Previous
-        </button>
-        <span> Page {currentPage} of {totalPages} </span>
-        <button
-          className='btn btn-primary'
-          onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-          disabled={currentPage === totalPages}
-        >
-          Next
-        </button>
-      </div>
+      {/* Pagination component */}
+      <Pagination 
+      currentPage={currentPage}
+      totalPages={totalPages}
+      onPageChange={setCurrentPage}
+      />
     </div>
   );
 };
