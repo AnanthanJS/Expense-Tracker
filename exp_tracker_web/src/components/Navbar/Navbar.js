@@ -1,17 +1,32 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../Navbar/Navbar.css';
 
 export const Navbar = () => {
-  const navigate = useNavigate(); // Hook for navigation
-  const username = localStorage.getItem('username'); // Retrieve username from local storage
+  const navigate = useNavigate();
+  const username = localStorage.getItem('username');
 
   const handleLogout = () => {
-    localStorage.removeItem('token'); // Remove token from local storage
-    localStorage.removeItem('username'); // Remove username from local storage
-    navigate('/login'); // Redirect to login page
-    window.location.reload(); // Reload the page to update the navbar
+    localStorage.removeItem('token');
+    localStorage.removeItem('username');
+    navigate('/login');
+    window.location.reload();
   };
+
+  useEffect(() => {
+    // Clear token and username on window exit
+    const clearTokenOnExit = () => {
+      localStorage.removeItem('token');
+      localStorage.removeItem('username');
+    };
+
+    window.addEventListener('beforeunload', clearTokenOnExit);
+
+    // Cleanup listener on component unmount
+    return () => {
+      window.removeEventListener('beforeunload', clearTokenOnExit);
+    };
+  }, []);
 
   return (
     <nav>
@@ -19,7 +34,7 @@ export const Navbar = () => {
         <li>
           <Link to="/">Home</Link>
         </li>
-        {username ? ( // Conditional rendering based on whether the user is logged in
+        {username ? (
           <>
             <li>Hello, {username}!</li>
             <li>
