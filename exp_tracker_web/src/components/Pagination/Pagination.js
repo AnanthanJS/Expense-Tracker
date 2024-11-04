@@ -11,7 +11,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         >
           Previous
         </button>
-        <span> Page {currentPage} of {totalPages} </span>
+        <span> Page(s) {currentPage} of {totalPages} </span>
         <button
           className='btn btn-primary'
           onClick={() => onPageChange(currentPage + 1)}
