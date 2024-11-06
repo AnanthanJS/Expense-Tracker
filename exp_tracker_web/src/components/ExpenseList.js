@@ -6,7 +6,8 @@ const ExpenseList = ({ expenses }) => {
   const [filterText, setFilterText] = useState('');
   const [sortConfig, setSortConfig] = useState({ key: '', direction: '' });
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5; // Change this number to show more or fewer items per page
+  const [itemsPerPage, setItemsPerPage] = useState(5);
+  // const itemsPerPage = 5; // Change this number to show more or fewer items per page
 
   // Filter expenses by title or category based on filter text
   const handleFilterChange = (event) => {
@@ -129,6 +130,11 @@ const ExpenseList = ({ expenses }) => {
       currentPage={currentPage}
       totalPages={totalPages}
       onPageChange={setCurrentPage}
+      itemsPerPage={itemsPerPage}
+      onItemsPerPageChange={(value) => {
+        setItemsPerPage(value);
+        setCurrentPage(1); // Reset to page 1 on itemsPerPage change
+      }}
       />
     </div>
   );
