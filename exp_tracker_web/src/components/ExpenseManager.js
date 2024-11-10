@@ -28,7 +28,7 @@ const ExpenseManager = () => {
   };
 
   return (
-    <div>
+    <div className='col-md-12'>
       <ExpenseForm onAddExpense={handleAddExpense} />
       <ExpenseList expenses={expenses} />
     </div>

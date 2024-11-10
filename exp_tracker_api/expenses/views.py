@@ -9,6 +9,8 @@ from rest_framework.authentication import TokenAuthentication
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.http import Http404
+from rest_framework.parsers import MultiPartParser, FormParser
+
 
 class ExpenseViewSet(viewsets.ModelViewSet):
     queryset = Expense.objects.all()
@@ -34,9 +36,22 @@ class ProfileView(generics.RetrieveUpdateAPIView):
     serializer_class = ProfileSerializer
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]  # Enables file upload handling
 
     def get_object(self):
         try:
             return self.get_queryset().get(user=self.request.user)
         except Profile.DoesNotExist:
             raise Http404("Profile not found")
+    def update(self, request, *args, **kwargs):
+        profile = self.get_object()
+        
+        # If no profile picture is uploaded, keep the existing one
+        if 'profile_picture' not in request.data:
+            request.data['profile_picture'] = profile.profile_picture
+        
+        serializer = self.get_serializer(profile, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        
+        return Response(serializer.data)

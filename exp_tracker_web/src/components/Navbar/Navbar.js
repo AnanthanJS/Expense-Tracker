@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../Navbar/Navbar.css';
 
@@ -12,21 +11,6 @@ export const Navbar = () => {
     navigate('/login');
     window.location.reload();
   };
-
-  useEffect(() => {
-    // Clear token and username on window exit
-    const clearTokenOnExit = () => {
-      localStorage.removeItem('token');
-      localStorage.removeItem('username');
-    };
-
-    window.addEventListener('beforeunload', clearTokenOnExit);
-
-    // Cleanup listener on component unmount
-    return () => {
-      window.removeEventListener('beforeunload', clearTokenOnExit);
-    };
-  }, []);
 
   return (
     <nav>

@@ -89,7 +89,7 @@ const ExpenseList = ({ expenses }) => {
                 handleSort(key, direction);
               }}
             >
-              <option selected value="">Select...</option>
+              <option value="select">Select...</option>
               <option value="title-ascending">A-Z</option>
               <option value="title-descending">Z-A</option>
               <option value="amount-ascending">Low to High</option>
