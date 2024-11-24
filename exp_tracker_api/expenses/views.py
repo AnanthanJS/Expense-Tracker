@@ -13,8 +13,18 @@ from rest_framework.parsers import MultiPartParser, FormParser
 
 
 class ExpenseViewSet(viewsets.ModelViewSet):
-    queryset = Expense.objects.all()
     serializer_class = ExpenseSerializer
+    permission_classes = [IsAuthenticated]
+
+    queryset = Expense.objects.none()
+
+    def get_queryset(self):
+        # Return only expenses of the logged-in user
+        return Expense.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        # Automatically set the user to the logged-in user
+        serializer.save(user=self.request.user)
 
 
 class RegisterView(generics.CreateAPIView):
