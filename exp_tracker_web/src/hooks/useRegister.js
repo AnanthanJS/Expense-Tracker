@@ -14,23 +14,27 @@ const useRegister = () => {
     setErrorMessage('');
     setSuccessMessage('');
 
-    const response = await fetch('http://localhost:8000/api/register/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, email, password }),
-    });
+    try {
+      const response = await fetch('http://localhost:8000/api/register/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, email, password }),
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (response.ok) {
-      setSuccessMessage('Registration successful! You can now log in.');
-      setTimeout(() => {
-        navigate('/login');
-      }, 3000);
-    } else {
-      setErrorMessage(data.detail || 'Registration failed. Please try again.');
+      if (response.ok) {
+        setSuccessMessage('Registration successful! You can now log in.');
+        setTimeout(() => {
+          navigate('/login');
+        }, 3000); // Redirect after 3 seconds
+      } else {
+        setErrorMessage(data.detail || 'Registration failed. Please try again.');
+      }
+    } catch (error) {
+      setErrorMessage('An error occurred. Please try again.');
     }
   };
 

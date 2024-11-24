@@ -9,22 +9,37 @@ const useLogin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch('http://localhost:8000/api/login/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, password }),
-    });
-    const data = await response.json();
-    console.log(data);
+    setErrorMessage(''); // Clear previous error message
 
-    if (response.ok) {
-      localStorage.setItem('token', data.token); // Store token for authentication
-      localStorage.setItem('username', username); // Store username
-      navigate('/'); // Redirect to home page
-    } else {
-      setErrorMessage(data.error || 'Invalid Username/Password. Please try again.'); // Show error message
+    try {
+      const response = await fetch('http://localhost:8000/api/login/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      // Parse the JSON response
+      const data = await response.json();
+      console.log(data); // Log the response for debugging
+
+      // Check if the response is OK (status code 200 or 201)
+      if (response.ok) {
+        // Store the token and username in localStorage
+        localStorage.setItem('token', data.token); 
+        localStorage.setItem('username', username);
+
+        // Redirect to the home page after login
+        navigate('/');
+      } else {
+        // Show the error message returned from the backend
+        setErrorMessage(data.error || 'Invalid Username/Password. Please try again.');
+      }
+    } catch (error) {
+      // Handle network errors or unexpected issues
+      setErrorMessage('An error occurred. Please try again.');
+      console.error('Login error:', error); // Log the error for debugging
     }
   };
 
