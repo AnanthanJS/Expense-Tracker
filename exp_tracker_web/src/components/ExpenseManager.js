@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getExpenses, addExpense } from '../services/expenseServices';
+import { getExpenses, addExpense } from '../components/services/expenseServices';
 import ExpenseList from './ExpenseList';
 import ExpenseForm from './ExpenseForm';
 

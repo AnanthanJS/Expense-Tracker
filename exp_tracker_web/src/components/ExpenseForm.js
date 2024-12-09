@@ -1,68 +1,74 @@
 import React, { useState } from 'react';
+import InputField from './common/InputField/InputField';
+import Button from './common/Button/Button';
 
 const ExpenseForm = ({ onAddExpense }) => {
-  const [title, setTitle] = useState('');
-  const [amount, setAmount] = useState('');
-  const [category, setCategory] = useState('');
-  const [date, setDate] = useState('');
+  const [formValues, setFormValues] = useState({
+    title: '',
+    amount: '',
+    category: '',
+    date: '',
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const newExpense = { title, amount, category, date };
-    await onAddExpense(newExpense); // Call the parent component's function
-    setTitle('');
-    setAmount('');
-    setCategory('');
-    setDate('');
+    await onAddExpense(formValues);
+    setFormValues({ title: '', amount: '', category: '', date: '' });
   };
 
   return (
-    <>
-      <div className='container'>
-        <div className='row justify-content-center'>
-          <div className='col-md-3'>
-            <form onSubmit={handleSubmit}>
-              <div className="mb-3 d-flex flex-column gap-3">
-                <input
-                  className="form-control"
-                  type="text"
-                  placeholder="Title"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  required
-                />
-                <input
-                  className="form-control"
-                  type="number"
-                  placeholder="Amount"
-                  value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
-                  required
-                />
-                <input
-                  className="form-control"
-                  type="text"
-                  placeholder="Category"
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                  required
-                />
-                <input
-                  className="form-control"
-                  type="date"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
-                  required
-                />
-                <div className='d-flex justify-content-center mt-1'>
-                  <button className='btn btn-primary w-100' type="submit">Add Expense</button>
-                </div>
+    <div className="container mx-auto p-4">
+      <div className="flex justify-center">
+        <div className="w-full max-w-md">
+          <form onSubmit={handleSubmit} className="bg-background dark:bg-background-dark p-6 rounded-lg shadow-lg">
+            <div className="space-y-4">
+              <InputField
+                type="text"
+                placeholder="Title"
+                name="title"
+                value={formValues.title}
+                onChange={handleChange}
+                required
+              />
+              <InputField
+                type="number"
+                placeholder="Amount"
+                name="amount"
+                value={formValues.amount}
+                onChange={handleChange}
+                required
+              />
+              <InputField
+                type="text"
+                placeholder="Category"
+                name="category"
+                value={formValues.category}
+                onChange={handleChange}
+                required
+              />
+              <InputField
+                type="date"
+                name="date"
+                value={formValues.date}
+                onChange={handleChange}
+                required
+              />
+              <div className="flex justify-center mt-4">
+                <Button type="submit">Add Expense</Button>
               </div>
-            </form>
-          </div>
+            </div>
+          </form>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

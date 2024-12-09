@@ -1,11 +1,11 @@
 import React from 'react';
-import ExpenseManager from '../components/ExpenseManager';
-import { Navbar } from '../components/Navbar/Navbar';
-import ProtectedRoute from '../components/ProtectedRoute';
+import ExpenseManager from '../ExpenseManager';
+import { CustomNavbar } from '../Navbar/CustomNavbar';
+import ProtectedRoute from '../ProtectedRoute';
 
 const Home = () => (
   <>
-    <Navbar />
+    <CustomNavbar />
     <ProtectedRoute>
     <div>
       <h1>Expense Tracker</h1>
