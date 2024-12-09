@@ -1,8 +1,8 @@
 import React from 'react';
-import { Navbar } from '../components/Navbar/Navbar';
+import { CustomNavbar } from '../Navbar/CustomNavbar';
 import useProfile from '../hooks/useProfile';
-import { ProfileForm } from '../components/Profile/ProfileForm';
-import { ProfileDetails } from '../components/Profile/ProfileDetails';
+import { ProfileForm } from '../Profile/ProfileForm';
+import { ProfileDetails } from '../Profile/ProfileDetails';
 
 const Profile = () => {
   const {
@@ -22,7 +22,7 @@ const Profile = () => {
 
   return (
     <>
-      <Navbar />
+      <CustomNavbar />
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-md-6">

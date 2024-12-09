@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Pagination from './Pagination/Pagination';
+import InputField from './common/InputField/InputField';
 
 const ExpenseList = ({ expenses }) => {
   const [filteredExpenses, setFilteredExpenses] = useState(expenses);
@@ -71,13 +72,11 @@ const ExpenseList = ({ expenses }) => {
         </div>
         <div className='col-3'>
           {/* Filter Input */}
-          <input
-            className="form-control"
+          <InputField 
             type="text"
             placeholder="Filter by title or category"
             value={filterText}
             onChange={handleFilterChange}
-            style={{ marginBottom: '10px', padding: '5px' }}
           />
 
           {/* Sorting Options */}
@@ -94,8 +93,7 @@ const ExpenseList = ({ expenses }) => {
               <option value="title-descending">Z-A</option>
               <option value="amount-ascending">Low to High</option>
               <option value="amount-descending">High to Low</option>
-              <option value="date-ascending">Earliest</option>
-              <option value="date-descending">Latest</option>
+              <option value="date-ascending">Most Recent</option>
             </select>
           </div>
         </div>
