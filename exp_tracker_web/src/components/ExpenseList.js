@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Pagination from './Pagination/Pagination';
 import InputField from './common/InputField/InputField';
+import Card from './common/Card/Card';
 
 const ExpenseList = ({ expenses }) => {
   const [filteredExpenses, setFilteredExpenses] = useState(expenses);
@@ -65,75 +66,104 @@ const ExpenseList = ({ expenses }) => {
   return (
     <div className='container'>
       <div className='row'>
-        <div 
-        className='col-9'
+        <Card
+          width="w-full md:w-3/4 mx-auto"
+          padding="p-6"
+          shadow="shadow-md"
+          borderRadius="rounded-lg"
+          textColor="text-gray-900 dark:text-gray-100"
         >
-          <h2>Expenses</h2>
-        </div>
-        <div className='col-3'>
-          {/* Filter Input */}
-          <InputField 
-            type="text"
-            placeholder="Filter by title or category"
-            value={filterText}
-            onChange={handleFilterChange}
-          />
+          {/* Filtering and Sorting Section */}
+          <div className="mb-6">
+            <div className="flex flex-col md:flex-row justify-between items-center">
+              {/* Heading */}
+              <h3 className="text-xl font-bold md:mb-0 text-primary dark:text-primary-light">
+                Expenses Table
+              </h3>
 
-          {/* Sorting Options */}
-          <div style={{ marginBottom: '10px' }}>
-            <label>Sort By: </label>
-            <select className="form-select"
-              onChange={(e) => {
-                const [key, direction] = e.target.value.split('-');
-                handleSort(key, direction);
-              }}
-            >
-              <option value="select">Select...</option>
-              <option value="title-ascending">A-Z</option>
-              <option value="title-descending">Z-A</option>
-              <option value="amount-ascending">Low to High</option>
-              <option value="amount-descending">High to Low</option>
-              <option value="date-ascending">Most Recent</option>
-            </select>
+              {/* Filter and Sort Options */}
+              <div className="flex flex-col md:flex-row gap-4 items-center md:ml-auto">
+                {/* Filter Input */}
+                <div className="w-full md:w-48">
+                  <label htmlFor="filterInput" className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Filter:
+                  </label>
+                  <InputField 
+                    id="filterInput"
+                    type="text"
+                    placeholder="Filter by title or category"
+                    value={filterText}
+                    onChange={handleFilterChange}
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+                  />
+                </div>
+
+                {/* Sorting Options */}
+                <div className="w-full md:w-48">
+                  <label htmlFor="sortOptions" className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Sort By:
+                  </label>
+                  <select
+                    id="sortOptions"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+                    onChange={(e) => {
+                      const [key, direction] = e.target.value.split('-');
+                      handleSort(key, direction);
+                    }}
+                  >
+                    <option value="select">Select...</option>
+                    <option value="title-ascending">A-Z</option>
+                    <option value="title-descending">Z-A</option>
+                    <option value="amount-ascending">Low to High</option>
+                    <option value="amount-descending">High to Low</option>
+                    <option value="date-ascending">Most Recent</option>
+                  </select>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
+
+          {/* Table Section */}
+          <table className="table-auto w-full">
+            <thead>
+              <tr className="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+                <th className="px-4 py-2 text-left">#</th>
+                <th className="px-4 py-2 text-left">Title</th>
+                <th className="px-4 py-2 text-left">Amount</th>
+                <th className="px-4 py-2 text-left">Category</th>
+                <th className="px-4 py-2 text-left">Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentExpenses.map((expense, index) => (
+                <tr
+                  key={expense.id}
+                  className={`${
+                    "bg-gray-50 dark:bg-gray-900"
+                  }`}
+                >
+                  <td className="px-4 py-2">{(currentPage - 1) * itemsPerPage + index + 1}</td>
+                  <td className="px-4 py-2">{expense.title}</td>
+                  <td className="px-4 py-2">${expense.amount}</td>
+                  <td className="px-4 py-2">{expense.category}</td>
+                  <td className="px-4 py-2">{expense.date}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </Card>
+        {/* Pagination component */}
+        <Pagination 
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+        itemsPerPage={itemsPerPage}
+        onItemsPerPageChange={(value) => {
+          setItemsPerPage(value);
+          setCurrentPage(1); // Reset to page 1 on itemsPerPage change
+        }}
+        />
       </div>
-
-      {/* Expenses Table */}
-      <table className="table">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Title</th>
-            <th scope="col">Amount</th>
-            <th scope="col">Category</th>
-            <th scope="col">Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentExpenses.map((expense, index) => (
-            <tr key={expense.id}>
-              <th scope="row">{(currentPage - 1) * itemsPerPage + index + 1}</th>
-              <td>{expense.title}</td>
-              <td>${expense.amount}</td>
-              <td>{expense.category}</td>
-              <td>{expense.date}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      {/* Pagination component */}
-      <Pagination 
-      currentPage={currentPage}
-      totalPages={totalPages}
-      onPageChange={setCurrentPage}
-      itemsPerPage={itemsPerPage}
-      onItemsPerPageChange={(value) => {
-        setItemsPerPage(value);
-        setCurrentPage(1); // Reset to page 1 on itemsPerPage change
-      }}
-      />
     </div>
   );
 };
