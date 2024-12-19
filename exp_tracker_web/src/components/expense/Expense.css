@@ -1,0 +1,40 @@
+.table-container {
+    width: 100%;
+    margin: 0 auto;
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #e5e7eb; /* Light border for light mode */
+  }
+  
+  .table thead tr {
+    background-color: #f3f4f6; /* Light gray for light mode */
+    color: #374151; /* Dark text for light mode */
+  }
+  
+  .dark .table thead tr {
+    background-color: #1f2937; /* Dark gray for dark mode */
+    color: #e5e7eb; /* Light text for dark mode */
+  }
+  
+  .table th, .table td {
+    padding: 0.5rem 1rem;
+    border: 1px solid #d1d5db; /* Light border for light mode */
+    color: #111827; /* Dark text color */
+  }
+  
+  .dark .table th, .dark .table td {
+    border: 1px solid #374151; /* Dark border for dark mode */
+    color: #e5e7eb; /* Light text color for dark mode */
+  }
+  
+  .table tbody tr:nth-child(even) {
+    background-color: #f9fafb; /* Light alternating row */
+  }
+  
+  .dark .table tbody tr:nth-child(even) {
+    background-color: #1e293b; /* Dark alternating row */
+  }
+  
