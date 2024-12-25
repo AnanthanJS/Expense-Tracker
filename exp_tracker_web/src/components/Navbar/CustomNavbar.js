@@ -1,28 +1,23 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-import './Navbar.css'
+import './Navbar.css';
 
 export const CustomNavbar = () => {
   const navigate = useNavigate();
   const username = localStorage.getItem('username');
 
-  // State for dark mode toggle
   const [darkMode, setDarkMode] = useState(() => {
-    // Initialize state based on localStorage
     return localStorage.getItem('darkMode') === 'true';
   });
 
-
-  // Handle dark mode toggle
   const toggleDarkMode = () => {
     setDarkMode((prevMode) => {
       const newMode = !prevMode;
-      localStorage.setItem('darkMode', newMode); // Persist to localStorage
+      localStorage.setItem('darkMode', newMode);
       return newMode;
     });
   };
 
-  // Ensure correct class is applied on mount
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add('dark');
@@ -39,65 +34,70 @@ export const CustomNavbar = () => {
   };
 
   return (
-    <nav className="pill-navbar">
-      <ul className="flex gap-4 items-center list-none">
+    <nav className="vertical-navbar bg-background dark:bg-background-dark text-text dark:text-text-dark shadow-md rounded-lg p-4">
+      <ul className="space-y-4">
         <li>
-          <Link
-            to="/"
-            className="navbar-link"
+          <NavLink
+            to="/dashboard"
+            className={({ isActive }) =>
+              isActive ? 'navbar-link active' : 'navbar-link'
+            }
           >
-            Home
-          </Link>
+            Dashboard
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            to="/expenses"
+            className={({ isActive }) =>
+              isActive ? 'navbar-link active' : 'navbar-link'
+            }
+          >
+            Expenses
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            to="/profile"
+            className={({ isActive }) =>
+              isActive ? 'navbar-link active' : 'navbar-link'
+            }
+          >
+            Profile
+          </NavLink>
         </li>
         {username ? (
-          <>
-            <li className="navbar-link">
-              Hello, {username}!
-            </li>
-            <li>
-              <Link
-                to="/profile"
-                className="navbar-link"
-              >
-                Profile
-              </Link>
-            </li>
-            <li>
-              <button
-                onClick={handleLogout}
-                className="navbar-link"
-              >
-                Logout
-              </button>
-            </li>
-          </>
+          <li>
+            <button onClick={handleLogout} className="navbar-link">
+              Logout
+            </button>
+          </li>
         ) : (
           <>
             <li>
-              <Link
+              <NavLink
                 to="/login"
-                className="navbar-link"
+                className={({ isActive }) =>
+                  isActive ? 'navbar-link active' : 'navbar-link'
+                }
               >
                 Login
-              </Link>
+              </NavLink>
             </li>
             <li>
-              <Link
+              <NavLink
                 to="/register"
-                className="navbar-link"
+                className={({ isActive }) =>
+                  isActive ? 'navbar-link active' : 'navbar-link'
+                }
               >
                 Register
-              </Link>
+              </NavLink>
             </li>
           </>
         )}
-
-        {/* Dark Mode Toggle */}
         <li>
-          <button
-            onClick={toggleDarkMode}
-            className="navbar-link"
-          >
+          <button onClick={toggleDarkMode} className="navbar-link">
             {darkMode ? 'Light Mode' : 'Dark Mode'}
           </button>
         </li>

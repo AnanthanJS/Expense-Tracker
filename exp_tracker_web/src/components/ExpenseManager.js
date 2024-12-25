@@ -6,9 +6,17 @@ import ExpenseForm from './ExpenseForm';
 const ExpenseManager = () => {
   const [expenses, setExpenses] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // Track if user is logged in
 
   useEffect(() => {
     async function fetchData() {
+      const token = localStorage.getItem('token'); // Check if user is logged in (has token)
+      
+      if (!token) {
+        setIsLoggedIn(false);
+        return; // If no token, stop fetching expenses and show login message
+      }
+
       try {
         const data = await getExpenses();
         setExpenses(data);
@@ -17,6 +25,7 @@ const ExpenseManager = () => {
         console.error('Error fetching expenses:', error);
       }
     }
+
     fetchData();
   }, []); // Empty array means this runs only once on mount
 
@@ -29,6 +38,14 @@ const ExpenseManager = () => {
       console.error('Error adding expense:', error);
     }
   };
+
+  if (!isLoggedIn) {
+    return (
+      <div className="alert alert-warning">
+        Please log in to access your expenses.
+      </div>
+    );
+  }
 
   return (
     <div className='col-md-12'>
