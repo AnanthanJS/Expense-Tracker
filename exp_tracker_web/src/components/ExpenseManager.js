@@ -7,6 +7,7 @@ const ExpenseManager = () => {
   const [expenses, setExpenses] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(true); // Track if user is logged in
+  const [showExpenseForm, setShowExpenseForm] = useState(false); // State to toggle between List and Form
 
   useEffect(() => {
     async function fetchData() {
@@ -39,6 +40,14 @@ const ExpenseManager = () => {
     }
   };
 
+  const handleNewExpenseClick = () => {
+    setShowExpenseForm(true); // Show the Expense Form
+  };
+
+  const handleFormCancel = () => {
+    setShowExpenseForm(false); // Go back to Expense List
+  };
+
   if (!isLoggedIn) {
     return (
       <div className="alert alert-warning">
@@ -48,10 +57,17 @@ const ExpenseManager = () => {
   }
 
   return (
-    <div className='col-md-12'>
+    <div className="col-md-12">
       {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
-      <ExpenseForm onAddExpense={handleAddExpense} />
-      <ExpenseList expenses={expenses} />
+
+      {/* Conditional rendering based on showExpenseForm state */}
+      {showExpenseForm ? (
+        <ExpenseForm onAddExpense={handleAddExpense} onCancel={handleFormCancel} />
+      ) : (
+        <>
+          <ExpenseList expenses={expenses} onNewExpenseClick={handleNewExpenseClick} />
+        </>
+      )}
     </div>
   );
 };
