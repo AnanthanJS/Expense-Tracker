@@ -1,5 +1,4 @@
 import React from 'react';
-import { CustomNavbar } from '../Navbar/CustomNavbar';
 import useRegister from '../hooks/useRegister';
 import InputField from '../common/InputField/InputField';
 import Button from '../common/Button/Button';
@@ -9,7 +8,6 @@ const Register = () => {
 
   return (
     <>
-      <CustomNavbar />
       <div className='container mt-5'>
         <div className='row justify-content-center'>
           <div className='col-md-4'>
