@@ -20,7 +20,7 @@ const Profile = () => {
   if (error) return <p style={{ color: 'red' }}>{error}</p>;
 
   return (
-    <div className="profile-container p-4 flex justify-center items-center">
+    <div className="profile-container p-2 flex justify-center items-center">
       <div className="w-full md:w-3/4 lg:w-2/3 xl:w-1/2">
         {showSuccess && (
           <div className="alert alert-success text-center mb-4">

@@ -7,6 +7,11 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
     "./src/assets/css/**/*.{css}",
   ],
+  safelist: [
+    'bg-primary', 'text-white', 'hover:bg-primary-dark',
+    'dark:bg-primary-dark', 'dark:text-primary-light',
+    'dark:hover:bg-primary-light',
+  ],
   darkMode: 'class',
   theme: {
     extend: {
