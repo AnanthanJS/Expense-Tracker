@@ -1,5 +1,4 @@
 import React from "react";
-import Card from "../common/Card/Card";
 import {
   FaUser,
   FaPhone,
@@ -8,72 +7,77 @@ import {
   FaBriefcase,
   FaMoneyBillWave,
 } from "react-icons/fa";
+import Button from "../common/Button/Button";
+import Card from "../common/Card/Card";
 
 export const ProfileDetails = ({ profile, imagePreview, setIsEditing }) => {
   return (
-    <div className="profile-details-container flex justify-center items-start">
-      <Card width="w-full md:w-2/3 lg:w-1/2 mx-auto" padding="p-6" shadow="shadow-lg">
-        <div className="flex flex-col items-center text-center">
-          {imagePreview ? (
-            <img
-              src={imagePreview}
-              alt="Profile"
-              className="rounded-full mb-4 shadow-md"
-              style={{ width: "120px", height: "120px", objectFit: "cover" }}
-            />
-          ) : (
-            <div
-              className="rounded-full bg-gray-200 mb-4 flex items-center justify-center"
-              style={{ width: "120px", height: "120px" }}
-            >
-              <FaUser className="text-gray-500 text-4xl" />
-            </div>
-          )}
-          <h3 className="text-2xl font-bold text-primary dark:text-primary-light mb-2">
-            Profile Information
-          </h3>
-        </div>
-        <div className="mt-4">
-          <ProfileInfo label="Bio" value={profile.bio} icon={<FaUser />} />
-          <ProfileInfo
-            label="Contact Number"
-            value={profile.contact_number}
-            icon={<FaPhone />}
+    <Card className="w-full max-w-4xl mx-auto space-y-1" padding="p-6">
+      {/* Profile Picture and Title */}
+      <div className="flex flex-col items-center text-center mb-6">
+        {imagePreview ? (
+          <img
+            src={imagePreview}
+            alt="Profile"
+            className="rounded-full mb-4 shadow-md"
+            style={{ width: "120px", height: "120px", objectFit: "cover" }}
           />
-          <ProfileInfo label="Place" value={profile.place} icon={<FaMapMarkerAlt />} />
-          <ProfileInfo label="Company" value={profile.company} icon={<FaBuilding />} />
-          <ProfileInfo
-            label="Job Title"
-            value={profile.job_title}
-            icon={<FaBriefcase />}
-          />
-          <ProfileInfo
-            label="Salary"
-            value={`$${profile.salary}`}
-            icon={<FaMoneyBillWave />}
-          />
-        </div>
-        <div className="flex justify-center mt-6">
-          <button
-            className="btn bg-primary text-white hover:bg-primary-dark px-6 py-2 rounded shadow-md transition-all duration-200"
-            onClick={() => setIsEditing(true)}
+        ) : (
+          <div
+            className="rounded-full bg-gray-200 mb-4 flex items-center justify-center shadow-md"
+            style={{ width: "120px", height: "120px" }}
           >
-            Edit Profile
-          </button>
-        </div>
-      </Card>
-    </div>
+            <FaUser className="text-gray-500 text-4xl" />
+          </div>
+        )}
+        <h3 className="text-2xl font-bold text-primary dark:text-primary-light">
+          Profile Information
+        </h3>
+      </div>
+
+      {/* Profile Info Section */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <ProfileInfo label="Bio" value={profile.bio} icon={<FaUser />} />
+        <ProfileInfo
+          label="Contact Number"
+          value={profile.contact_number}
+          icon={<FaPhone />}
+        />
+        <ProfileInfo label="Place" value={profile.place} icon={<FaMapMarkerAlt />} />
+        <ProfileInfo label="Company" value={profile.company} icon={<FaBuilding />} />
+        <ProfileInfo
+          label="Job Title"
+          value={profile.job_title}
+          icon={<FaBriefcase />}
+        />
+        <ProfileInfo
+          label="Salary"
+          value={`$${profile.salary}`}
+          icon={<FaMoneyBillWave />}
+        />
+      </div>
+
+      {/* Edit Button */}
+      <div className="flex justify-center pt-3">
+        <Button
+          variant="primary"
+          onClick={() => setIsEditing(true)}
+          className="w-full px-6 py-2 text-lg"
+        >
+          Edit Profile
+        </Button>
+      </div>
+    </Card>
   );
 };
 
 const ProfileInfo = ({ label, value, icon }) => (
-  <div className="flex items-center justify gap-4 py-1 border-b border-gray-300 dark:border-gray-700">
-    <div className="flex text-primary dark:text-primary-light text-lg md:text-xl">
-      {icon}
-    </div>
-    <div className="flex-1 pt-3">
+  <div className="flex items-center gap-4 px-4 p-2 shadow-md rounded-md border dark:border-gray-700">
+    <div className="text-primary dark:text-primary-light text-xl">{icon}</div>
+    <div className="flex-1">
       <p className="text-sm md:text-base text-gray-700 dark:text-gray-300">
-        <strong>{label}:</strong> {value || "N/A"}
+        <strong className="text-gray-800 dark:text-gray-200">{label}:</strong>{" "}
+        {value || "N/A"}
       </p>
     </div>
   </div>
