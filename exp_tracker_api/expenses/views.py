@@ -40,7 +40,8 @@ class LoginView(APIView):
             token, created = Token.objects.get_or_create(user=user)
             return Response({'token': token.key})
         return Response({'error': 'Invalid Credentials'}, status=400)
-    
+
+
 class ProfileView(generics.RetrieveUpdateAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
@@ -53,15 +54,21 @@ class ProfileView(generics.RetrieveUpdateAPIView):
             return self.get_queryset().get(user=self.request.user)
         except Profile.DoesNotExist:
             raise Http404("Profile not found")
+
     def update(self, request, *args, **kwargs):
         profile = self.get_object()
-        
-        # If no profile picture is uploaded, keep the existing one
-        if 'profile_picture' not in request.data:
-            request.data['profile_picture'] = profile.profile_picture
-        
-        serializer = self.get_serializer(profile, data=request.data, partial=True)
+
+        # Create a mutable copy of the request data
+        data = request.data.copy()
+
+        # Check if a new profile picture is provided, if not, retain the existing one
+        if 'profile_picture' not in request.FILES:
+            # If no new file is uploaded, use the existing profile picture
+            data['profile_picture'] = profile.profile_picture
+
+        # Proceed with the update as normal
+        serializer = self.get_serializer(profile, data=data, partial=True)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
-        
+
         return Response(serializer.data)
