@@ -105,7 +105,10 @@ const ExpenseList = ({ expenses, onNewExpenseClick }) => {
     () =>
       expenses.map((expense, index) => ({
         id: index + 1,
-        ...expense,
+        ...(() => {
+          const { id, ...rest } = expense;
+          return rest;
+        })(),
         amount: Number(expense.amount),
       })),
     [expenses]

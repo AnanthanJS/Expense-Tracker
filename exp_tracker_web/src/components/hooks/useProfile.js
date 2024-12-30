@@ -8,7 +8,7 @@ const useProfile = () => {
     place: '',
     company: '',
     salary: '',
-    job_title: ''
+    job_title: '',
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -32,7 +32,7 @@ const useProfile = () => {
       try {
         const response = await fetch('http://localhost:8000/api/profile/', {
           headers: {
-            'Authorization': `Token ${token}`,
+            Authorization: `Token ${token}`,
           },
         });
 
@@ -40,16 +40,15 @@ const useProfile = () => {
           const data = await response.json();
           setProfile(data);
           if (data.profile_picture) {
-            setImagePreview(data.profile_picture);  // Ensure the preview is set
+            setImagePreview(data.profile_picture);
           }
-        } else if (response.status === 401) {
-          setError('Authentication failed. Please log in again.');
-        } else if (response.status === 403) {
-          setError('Access forbidden. Please log in to access your profile.');
-        } else if (response.status === 404) {
-          setError('Profile not found. Please create a profile.');
         } else {
-          setError('Failed to fetch profile data.');
+          const errorMessage = {
+            401: 'Authentication failed. Please log in again.',
+            403: 'Access forbidden. Please log in to access your profile.',
+            404: 'Profile not found. Please create a profile.',
+          }[response.status] || 'Failed to fetch profile data.';
+          setError(errorMessage);
         }
       } catch (err) {
         setError('An error occurred. Please try again.');
@@ -63,24 +62,26 @@ const useProfile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const formData = new FormData();
     formData.append('bio', profile.bio);
-    
-    if (profile.profile_picture && typeof profile.profile_picture !== 'string') {
-      formData.append('profile_picture', profile.profile_picture);
-    }
-
     formData.append('contact_number', profile.contact_number);
     formData.append('place', profile.place);
     formData.append('company', profile.company);
     formData.append('salary', profile.salary);
     formData.append('job_title', profile.job_title);
+    
+    // Only append profile picture if it's set (user has chosen a new file)
+    if (profile.profile_picture instanceof File) {
+      formData.append('profile_picture', profile.profile_picture);
+    }
 
     try {
+      setLoading(true);
       const response = await fetch('http://localhost:8000/api/profile/', {
         method: 'PUT',
         headers: {
-          'Authorization': `Token ${localStorage.getItem('token')}`,
+          Authorization: `Token ${localStorage.getItem('token')}`,
         },
         body: formData,
       });
@@ -88,28 +89,38 @@ const useProfile = () => {
       if (response.ok) {
         const updatedProfile = await response.json();
         setProfile(updatedProfile);
-        // Immediately update the imagePreview with the updated profile picture
         if (updatedProfile.profile_picture) {
           setImagePreview(updatedProfile.profile_picture);
         }
         setShowSuccess(true);
-        setIsEditing(false);
+        setTimeout(() => setShowSuccess(false), 3000); // Reset success message
+        setIsEditing(false); // Redirect to ProfileDetails
       } else {
         setError('Failed to update profile. Please try again.');
       }
     } catch (err) {
       setError('An error occurred while updating. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
-  // When a user selects a new image, update the preview
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setProfile({ ...profile, profile_picture: file });
-      setImagePreview(URL.createObjectURL(file)); // Show preview instantly
+      setImagePreview(URL.createObjectURL(file));
     }
   };
+
+  useEffect(() => {
+    // Cleanup object URLs to prevent memory leaks
+    return () => {
+      if (imagePreview.startsWith('blob:')) {
+        URL.revokeObjectURL(imagePreview);
+      }
+    };
+  }, [imagePreview]);
 
   return {
     profile,
@@ -122,7 +133,8 @@ const useProfile = () => {
     setIsEditing,
     handleSubmit,
     setShowSuccess,
-    handleImageChange
+    handleImageChange,
+    setImagePreview,
   };
 };
 

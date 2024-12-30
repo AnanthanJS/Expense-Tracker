@@ -9,6 +9,7 @@ export const ProfileForm = ({
   setProfile,
   handleSubmit,
   setIsEditing,
+  setImagePreview,
 }) => {
   return (
     <Card className="w-full max-w-4xl mx-auto mt-8">
@@ -44,11 +45,15 @@ export const ProfileForm = ({
             <InputField
               id="profilePicture"
               type="file"
-              onChange={(e) =>
-                setProfile({ ...profile, profile_picture: e.target.files[0] })
-              }
-              required
+              onChange={(e) => {
+                const file = e.target.files[0];
+                if (file) {
+                  setProfile({ ...profile, profile_picture: file });
+                  setImagePreview(URL.createObjectURL(file)); // Update preview
+                }
+              }}
               className="w-full"
+              accept="image/*"
             />
             {/* {imagePreview && (
               <img

@@ -12,7 +12,7 @@ import Card from "../common/Card/Card";
 
 export const ProfileDetails = ({ profile, imagePreview, setIsEditing }) => {
   return (
-    <Card className="w-full max-w-4xl mx-auto space-y-1" padding="p-6">
+    <Card className="w-full max-w-4xl mx-auto space-y-4" padding="p-6">
       {/* Profile Picture and Title */}
       <div className="flex flex-col items-center text-center mb-6">
         {imagePreview ? (
@@ -37,21 +37,18 @@ export const ProfileDetails = ({ profile, imagePreview, setIsEditing }) => {
 
       {/* Profile Info Section */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-        <ProfileInfo label="Bio" value={profile.bio} icon={<FaUser />} />
+        <ProfileInfo value={profile.bio} icon={<FaUser />} />
         <ProfileInfo
-          label="Contact Number"
           value={profile.contact_number}
           icon={<FaPhone />}
         />
-        <ProfileInfo label="Place" value={profile.place} icon={<FaMapMarkerAlt />} />
-        <ProfileInfo label="Company" value={profile.company} icon={<FaBuilding />} />
+        <ProfileInfo value={profile.place} icon={<FaMapMarkerAlt />} />
+        <ProfileInfo value={profile.company} icon={<FaBuilding />} />
         <ProfileInfo
-          label="Job Title"
           value={profile.job_title}
           icon={<FaBriefcase />}
         />
         <ProfileInfo
-          label="Salary"
           value={`$${profile.salary}`}
           icon={<FaMoneyBillWave />}
         />

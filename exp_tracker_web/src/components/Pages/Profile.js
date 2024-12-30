@@ -14,6 +14,7 @@ const Profile = () => {
     setProfile,
     setIsEditing,
     handleSubmit,
+    setImagePreview,
   } = useProfile();
 
   if (loading) return <p>Loading profile...</p>;
@@ -34,6 +35,7 @@ const Profile = () => {
             setProfile={setProfile}
             handleSubmit={handleSubmit}
             setIsEditing={setIsEditing}
+            setImagePreview={setImagePreview}
           />
         ) : (
           <ProfileDetails
