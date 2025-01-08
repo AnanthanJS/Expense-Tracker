@@ -29,6 +29,9 @@ module.exports = {
         background: {
           DEFAULT: '#F9FAFB',
           dark: '#1F2937',
+          primary: '#0000',
+          secondary: '#374151',
+          tertiary: '#4B5563',
         },
         text: {
           DEFAULT: '#111827',
@@ -53,11 +56,8 @@ module.exports = {
   plugins: [
     function ({ addComponents }) {
       addComponents({
-        '.pill-navbar': {
-          '@apply bg-background dark:bg-background-dark shadow-md p-4 rounded-pill flex justify-between items-center': {},
-        },
         '.navbar-link': {
-          '@apply no-underline text-primary dark:text-text-dark hover:text-primary-dark dark:hover:text-primary-light transition-colors ease-in-out duration-300': {},
+          '@apply no-underline text-text-light dark:text-text-dark transition-colors ease-in-out duration-300': {},
         },
       });
     },

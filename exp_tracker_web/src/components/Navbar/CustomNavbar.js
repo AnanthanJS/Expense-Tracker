@@ -1,6 +1,12 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import './Navbar.css';
+import HomeIcon from '@mui/icons-material/Home';
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import LoginIcon from '@mui/icons-material/Login';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
 export const CustomNavbar = () => {
   const navigate = useNavigate();
@@ -34,42 +40,57 @@ export const CustomNavbar = () => {
   };
 
   return (
-    <nav className="vertical-navbar bg-background dark:bg-background-dark text-text dark:text-text-dark shadow-md rounded-lg p-4">
-      <ul className="space-y-4">
+    <nav className="vertical-navbar text-text dark:text-text-dark p-4">
+      <ul className="space-y-12">
         <li>
           <NavLink
-            to="/dashboard"
+            to="/"
             className={({ isActive }) =>
-              isActive ? 'navbar-link active' : 'navbar-link'
+              `navbar-link text-lg px-4 py-2 rounded transition ${
+                isActive
+                  ? 'bg-background-primary dark:bg-background-tertiary'
+                  : 'hover:bg-background-secondary dark:hover:bg-background-tertiary'
+              }`
             }
           >
-            Dashboard
+            <HomeIcon className="inline-block mr-2" /> Home
           </NavLink>
         </li>
         <li>
           <NavLink
             to="/expenses"
             className={({ isActive }) =>
-              isActive ? 'navbar-link active' : 'navbar-link'
+              `navbar-link text-lg px-4 py-2 rounded transition ${
+                isActive
+                  ? 'bg-background-primary dark:bg-background-tertiary'
+                  : 'hover:bg-background-secondary dark:hover:bg-background-tertiary'
+              }`
             }
           >
-            Expenses
+            <AccountBalanceWalletIcon className="inline-block mr-2" /> Expenses
           </NavLink>
         </li>
         <li>
           <NavLink
             to="/profile"
             className={({ isActive }) =>
-              isActive ? 'navbar-link active' : 'navbar-link'
+              `navbar-link text-lg px-4 py-2 rounded transition ${
+                isActive
+                  ? 'bg-background-primary dark:bg-background-tertiary'
+                  : 'hover:bg-background-secondary dark:hover:bg-background-tertiary'
+              }`
             }
           >
-            Profile
+            <AccountCircleIcon className="inline-block mr-2" /> Profile
           </NavLink>
         </li>
         {username ? (
           <li>
-            <button onClick={handleLogout} className="navbar-link">
-              Logout
+            <button
+              onClick={handleLogout}
+              className="navbar-link text-lg px-4 py-2 rounded transition hover:bg-background-tertiary dark:hover:bg-background-tertiary"
+            >
+              <ExitToAppIcon className="inline-block mr-2" /> Logout
             </button>
           </li>
         ) : (
@@ -78,26 +99,37 @@ export const CustomNavbar = () => {
               <NavLink
                 to="/login"
                 className={({ isActive }) =>
-                  isActive ? 'navbar-link active' : 'navbar-link'
+                  `navbar-link text-lg px-4 py-2 rounded transition ${
+                    isActive
+                      ? 'bg-background-primary dark:bg-background-tertiary'
+                      : 'hover:bg-background-secondary dark:hover:bg-background-tertiary'
+                  }`
                 }
               >
-                Login
+                <LoginIcon className="inline-block mr-2" /> Login
               </NavLink>
             </li>
             <li>
               <NavLink
                 to="/register"
                 className={({ isActive }) =>
-                  isActive ? 'navbar-link active' : 'navbar-link'
+                  `navbar-link text-lg px-4 py-2 rounded transition ${
+                    isActive
+                      ? 'bg-background-primary dark:bg-background-tertiary'
+                      : 'hover:bg-background-secondary dark:hover:bg-background-tertiary'
+                  }`
                 }
               >
-                Register
+                <PersonAddIcon className="inline-block mr-2" /> Register
               </NavLink>
             </li>
           </>
         )}
         <li>
-          <button onClick={toggleDarkMode} className="navbar-link">
+          <button
+            onClick={toggleDarkMode}
+            className="navbar-link text-lg px-4 py-2 rounded transition hover:bg-background-tertiary dark:hover:bg-background-tertiary"
+          >
             {darkMode ? 'Light Mode' : 'Dark Mode'}
           </button>
         </li>

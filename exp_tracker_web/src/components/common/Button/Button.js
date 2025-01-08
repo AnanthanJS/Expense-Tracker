@@ -8,8 +8,11 @@ const Button = ({ variant = 'primary', children, className, ...props }) => {
     secondary: 'bg-secondary text-white hover:bg-secondary-dark dark:bg-secondary-dark dark:hover:bg-secondary-light',
   };
 
+  // Make the padding responsive using Tailwind's responsive classes
+  const responsivePadding = 'px-4 py-2 sm:px-6 sm:py-3 lg:px-8 lg:py-4'; // Adjust padding for small, medium, and large screens
+
   // Merge default classes with custom ones
-  const combinedClassNames = clsx(baseClass, variants[variant], className);
+  const combinedClassNames = clsx(baseClass, variants[variant], responsivePadding, className);
 
   return (
     <button className={combinedClassNames} {...props}>
