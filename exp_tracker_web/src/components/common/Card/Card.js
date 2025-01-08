@@ -10,11 +10,17 @@ const Card = ({
   borderRadius = "rounded-lg",
   background = "bg-background dark:bg-background-dark",
   textColor = "text-primary dark:text-primary-light",
+  themeOverride = false,
   ...props
 }) => {
+
+  const cardClass = themeOverride
+    ? '' // Remove all theme-related classes if themeOverride is true
+    : `${background} ${textColor} ${shadow}`;
+
   return (
     <div
-      className={`${background} ${textColor} ${width} ${height} ${padding} ${shadow} ${borderRadius} ${className}`}
+      className={` ${cardClass} ${width} ${height} ${padding} ${borderRadius} ${className}`}
       {...props}
     >
       {children}
